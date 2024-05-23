@@ -1,0 +1,104 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: app-config-rhdh
+data:
+  app-config-rhdh.yaml: |
+    signInPage: microsoft 
+    app:
+      title: Red Hat Developer Hub
+      baseUrl: https://backstage-developer-hub-rhdh-azure.${basedomain}
+    backend:
+      auth:
+        keys:
+          - secret: ${BACKEND_SECRET}
+      baseUrl: https://backstage-developer-hub-rhdh-azure.${basedomain}
+      cors:
+        origin: https://backstage-developer-hub-rhdh-azure.${basedomain} 
+    auth:
+      environment: production
+      providers:
+        microsoft:
+          production:
+            clientId: cde2ce1e-56b2-4720-a147-e546e2c8c4a8
+            clientSecret: vHL8Q~B5xAH4QQptGqDwB0ixN0LEOnSr0axYCatf
+            tenantId: da36f056-9758-474a-a3b6-5d3811d03009    
+  
+    integrations:
+      azure:
+       - host: dev.azure.com
+         credentials:
+          - organizations:
+              - ramyessawy
+            personalAccessToken: exmmw4ohfqe2zuprrmzgyaccoutx2x6krfqx4e3qrry3rbxom5qa
+    azureDevOps:
+      host: dev.azure.com
+      clientId: cde2ce1e-56b2-4720-a147-e546e2c8c4a8
+      clientSecret: vHL8Q~B5xAH4QQptGqDwB0ixN0LEOnSr0axYCatf
+      tenantId: a36f056-9758-474a-a3b6-5d3811d03009
+      organization: ramyessawy
+      
+    catalog:
+      rules:
+        - allow: [Component, System, Group, Resource, Location, Template, API, User, Domain, Type]    
+      locations:
+        - type: url
+          target: https://dev.azure.com/ramyessawy/_git/rhdh_ado?path=/catalog-info.yaml&version=GBmain&_a=contents
+          rules:
+            - allow: [Component, System, Group, Resource, Location, Template, API, User, Domain, Type]              
+      providers:
+        azureDevOps:
+          yourProviderId: # identifies your dataset / provider independent of config changes
+            organization: ramyessawy
+            project: '*'
+            repository: '*' # this will match all repos starting with service-*
+            path: /catalog-info.yaml          
+        microsoftGraphOrg:
+          default:
+            clientId: cde2ce1e-56b2-4720-a147-e546e2c8c4a8
+            clientSecret: vHL8Q~B5xAH4QQptGqDwB0ixN0LEOnSr0axYCatf
+            tenantId: a36f056-9758-474a-a3b6-5d3811d03009
+            user:
+              filter: accountEnabled eq true and userType eq 'member'
+            group:
+              filter: >
+                securityEnabled eq false
+                and mailEnabled eq true
+                and groupTypes/any(c:c+eq+'Unified')
+            schedule:
+              frequency: PT1H
+              timeout: PT50M
+
+      azureDevOps:
+        yourProviderId: # identifies your dataset / provider independent of config changes
+          organization: ramyessawy
+          project: '*'
+          repository: '*' # this will match all repos starting with service-*
+          path: /catalog-info.yaml          
+      microsoftGraphOrg:
+        default:
+          clientId: cde2ce1e-56b2-4720-a147-e546e2c8c4a8
+          clientSecret: vHL8Q~B5xAH4QQptGqDwB0ixN0LEOnSr0axYCatf
+          tenantId: a36f056-9758-474a-a3b6-5d3811d03009
+          user:
+            filter: accountEnabled eq true and userType eq 'member'
+          group:
+            filter: >
+              securityEnabled eq false
+              and mailEnabled eq true
+              and groupTypes/any(c:c+eq+'Unified')
+          schedule:
+            frequency: PT1H
+            timeout: PT50M
+
+    enabled:
+        azure: true
+        azureDevOps: true
+        microsoftGraphOrg: true  
+    permission:
+      enabled: true 
+      rbac:
+        admin:
+          superUsers:
+            - name: user:default/e3fbf2d8-4337-4b9a-9001-596564482a48                                                     
+        
