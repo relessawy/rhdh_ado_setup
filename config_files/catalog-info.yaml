@@ -1,0 +1,62 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: team-a
+  description: "Dev Team A"
+spec:
+  type: team
+  profile:
+    displayName: "Dev Team"
+    email: dev-team@myorg.com
+  parent: my-org
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: user1
+spec:
+  memberOf: team-a
+---  
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: example-system
+spec:
+  owner: team-a
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: example_api
+  description: "Example API"
+spec:
+  type: grpc
+  lifecycle: production
+  owner: team-a
+  system: example-system
+  definition: |
+    syntax = "proto3";
+    package myorg.mygrpcapi;
+    message MyRequest {
+      string query = 1;
+    }
+    message MyResponse {
+      string result = 1;
+    }
+    service MyGrpcApi {
+      rpc MyMethod (MyRequest) returns (MyResponse);
+    }
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: example-backend
+  description: "Example Backend Service"
+spec:
+  type: azure-website
+  lifecycle: production
+  owner: team-a
+  system: example-system
+  providesApis:
+    - example_api

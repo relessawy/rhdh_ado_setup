@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: dynamic-plugins-rhdh
+data:
+  dynamic-plugins.yaml: |
+    includes:
+      - dynamic-plugins.default.yaml
+    plugins:
+      - package: ./dynamic-plugins/dist/backstage-plugin-azure-devops 
+        disabled: false
+    
+      - package: ./dynamic-plugins/dist/backstage-plugin-azure-devops-backend-dynamic
+        disabled: false
+        
+      - package: './dynamic-plugins/dist/janus-idp-backstage-plugin-rbac'
+        disabled: false
+
+      - disabled: false
+        integrity: >-
+            sha512-C7qhlHOQeXMNMPekgEoTdTiVq2hHdZkHvUHpb4EyCOE8MzGFx1LTl7r7ch4jiFkr15YQuqOImYUc/JhGNnes8A==
+        package: '@backstage/plugin-catalog-backend-module-msgraph@0.5.26'
