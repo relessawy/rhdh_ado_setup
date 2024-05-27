@@ -18,4 +18,4 @@ Before you begin, ensure you have the following:
 
 ## Getting Started
 
-Follow the instructions in the file: setup_guide.ascii .
+Follow the instructions in the file: setup_guide.adoc .
