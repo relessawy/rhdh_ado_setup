@@ -31,12 +31,7 @@ data:
           - organizations:
               - ${organization}
             personalAccessToken: ${ADO_PAT}
-    azureDevOps:
-      host: dev.azure.com
-      clientId: ${AUTH_AZURE_CLIENT_ID}
-      clientSecret: ${AUTH_AZURE_CLIENT_SECRET}
-      tenantId: ${AUTH_AZURE_TENANT_ID}
-      organization: ${organization}
+
       
     catalog:
       rules:
@@ -68,28 +63,6 @@ data:
             schedule:
               frequency: PT1H
               timeout: PT50M
-
-      azureDevOps:
-        yourProviderId: # identifies your dataset / provider independent of config changes
-          organization: ${organization}
-          project: '*'
-          repository: '*' # this will match all repos starting with service-*
-          path: /catalog-info.yaml          
-      microsoftGraphOrg:
-        default:
-          clientId: ${AUTH_AZURE_CLIENT_ID}
-          clientSecret: ${AUTH_AZURE_CLIENT_SECRET}
-          tenantId: ${AUTH_AZURE_TENANT_ID}
-          user:
-            filter: accountEnabled eq true and userType eq 'member'
-          group:
-            filter: >
-              securityEnabled eq false
-              and mailEnabled eq true
-              and groupTypes/any(c:c+eq+'Unified')
-          schedule:
-            frequency: PT1H
-            timeout: PT50M
 
     enabled:
         azure: true
